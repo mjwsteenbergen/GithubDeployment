@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,24 +21,21 @@ namespace GitHubDeployment
                         {
                             try
                             {
-                                Console.WriteLine("Starting");
-
+//                                Updater u = new Updater("restsharp", "RestSharp");
+//                                u.Install();
                                 Downloader download = new Downloader(options.OwnerName, options.RepositoryName,
                                     options.Version,
                                     options.DowloadLocation,
                                     options.Type);
 
-                                if (options.AutoUpdate)
+                                if (options.Apply)
                                 {
-                                    await download.Update();
+                                    (new Updater(options.OwnerName, options.RepositoryName)).Apply();
+                                    return;
                                 }
-                                else
-                                {
-                                    Release r = await download.GetRelease();
-                                    await download.DownloadFile(r.zipball_url);
-                                }
+                                await download.Update();
 
-                                
+                                Console.ReadLine();
                             }
                             catch (Exception e)
                             {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubDeployment", "GitHubDeployment\GitHubDeployment.csproj", "{08D46372-6C01-464E-937D-5DBEB956D08F}"
 EndProject
@@ -10,15 +10,20 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Deploy|Any CPU = Deploy|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{08D46372-6C01-464E-937D-5DBEB956D08F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08D46372-6C01-464E-937D-5DBEB956D08F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D46372-6C01-464E-937D-5DBEB956D08F}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{08D46372-6C01-464E-937D-5DBEB956D08F}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
 		{08D46372-6C01-464E-937D-5DBEB956D08F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08D46372-6C01-464E-937D-5DBEB956D08F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
 		{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
