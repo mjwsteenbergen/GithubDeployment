@@ -52,7 +52,8 @@ namespace GitHubDeployment
                 if (IsUnix)
                 {
                     ProcessStartInfo psi = new ProcessStartInfo();
-                    psi.FileName = GetApplicationPath + Path.DirectorySeparatorChar + package.Install;
+                    
+                    psi.FileName = "(cd " + GetApplicationPath + "&&"  + GetApplicationPath + Path.DirectorySeparatorChar + package.Install + ")";
                     psi.UseShellExecute = false;
                     psi.RedirectStandardOutput = true;
 
