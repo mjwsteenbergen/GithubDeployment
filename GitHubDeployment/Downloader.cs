@@ -49,6 +49,8 @@ namespace GitHubDeployment
                 return;
             }
 
+            Console.WriteLine("Found new version: " + latestRelease.tag_name);
+
             Directory.CreateDirectory(updater.GetUpdateLocation);
 
             string downloadedFilename = "";

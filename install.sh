@@ -1,3 +1,4 @@
+echo Starting Install Script
 cd new
 git clone git@github.com:mjwsteenbergen/ApiLibs.git
  ApiLibs
