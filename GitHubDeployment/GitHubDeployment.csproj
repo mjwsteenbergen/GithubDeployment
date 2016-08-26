@@ -118,7 +118,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ApiLibs\ApiLibs\ApiLibs.csproj">
+    <ProjectReference Include=".\..\ApiLibs\ApiLibs\ApiLibs.csproj">
       <Project>{752662fe-4adf-4ae2-818a-e464b4abe5ba}</Project>
       <Name>ApiLibs</Name>
     </ProjectReference>

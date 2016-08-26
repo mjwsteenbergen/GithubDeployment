@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubDeployment", "GitHubDeployment\GitHubDeployment.csproj", "{08D46372-6C01-464E-937D-5DBEB956D08F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiLibs", "..\ApiLibs\ApiLibs\ApiLibs.csproj", "{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiLibs", ".\ApiLibs\ApiLibs\ApiLibs.csproj", "{752662FE-4ADF-4AE2-818A-E464B4ABE5BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
