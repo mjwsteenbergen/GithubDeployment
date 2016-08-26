@@ -112,11 +112,7 @@ namespace GitHubDeployment
 
         public async Task<Release> GetRelease()
         {
-
-//            Passwords pass = Passwords.ReadPasswords(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Laurentia\");
-            GitHubService ghs = new GitHubService(updater.package.github_token);
-//            var releaseasa = await ghs.GetRelease(user, name, "105.2.3");
-//            var list = await ghs.GetMyRepositories();
+            GitHubService ghs = updater?.package?.github_token == null ? new GitHubService() : new GitHubService(updater.package.github_token);
             List<Release> releases = await ghs.GetReleases(user, name);
 
             Release correctRelease;
