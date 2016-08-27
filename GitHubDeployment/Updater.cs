@@ -53,7 +53,9 @@ namespace GitHubDeployment
                 {
                     ProcessStartInfo psi = new ProcessStartInfo();
                     
-                    psi.FileName = "(cd " + GetApplicationPath + "&&"  + GetApplicationPath + Path.DirectorySeparatorChar + package.Install + ")";
+                    psi.FileName = "sh";
+					psi.Arguments = package.Install;
+					psi.WorkingDirectory = GetApplicationPath;
                     psi.UseShellExecute = false;
                     psi.RedirectStandardOutput = true;
 

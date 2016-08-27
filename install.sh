@@ -1,7 +1,6 @@
 echo Starting Install Script
 cd new
-git clone git@github.com:mjwsteenbergen/ApiLibs.git
- ApiLibs
+git clone git@github.com:mjwsteenbergen/ApiLibs.git ApiLibs
 cd ApiLibs
 nuget restore
 cd ..
