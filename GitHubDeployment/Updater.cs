@@ -51,18 +51,19 @@ namespace GitHubDeployment
             {
                 if (IsUnix)
                 {
-                    ProcessStartInfo psi = new ProcessStartInfo();
-                    
-                    psi.FileName = "sh";
-					psi.Arguments = package.Install;
-					psi.WorkingDirectory = GetApplicationPath;
-                    psi.UseShellExecute = false;
-                    psi.RedirectStandardOutput = true;
+                    ProcessStartInfo psi = new ProcessStartInfo
+                    {
+                        FileName = "sh",
+                        Arguments = package.Install,
+                        WorkingDirectory = GetApplicationPath,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true
+                    };
 
                     Process p = Process.Start(psi);
                     string strOutput = p.StandardOutput.ReadToEnd();
                     p.WaitForExit();
-                    Console.WriteLine(strOutput);
+                    Trace.WriteLine(strOutput);
                 }
                 else
                 {
@@ -76,6 +77,7 @@ namespace GitHubDeployment
         {
             if (Directory.Exists(GetUpdateLocation))
             {
+                Trace.WriteLine("Applying update");
                 if (Directory.Exists(GetOutdatedApplicationPath))
                 {
                     DirectoryInfo oldDirectoryInfo = new DirectoryInfo(GetOutdatedApplicationPath);
@@ -90,6 +92,10 @@ namespace GitHubDeployment
 
                 DirectoryInfo updateInfo =  new DirectoryInfo(GetUpdateLocation);
                 updateInfo.MoveTo(GetCurrrentApplicationPath);
+            }
+            else
+            {
+                Trace.WriteLine("No update was found to apply");
             }
         }
 

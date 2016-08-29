@@ -6,9 +6,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApiLibs.GitHub;
@@ -46,10 +43,11 @@ namespace GitHubDeployment
 
             if (updater.package.Version == latestRelease.tag_name)
             {
+                Trace.WriteLine("Latest version was already installed");
                 return;
             }
 
-            Console.WriteLine("Found new version: " + latestRelease.tag_name);
+            Trace.WriteLine("Found new version: " + latestRelease.tag_name);
 
             Directory.CreateDirectory(updater.GetUpdateLocation);
 
@@ -70,7 +68,7 @@ namespace GitHubDeployment
                 }
             }
 
-            if ((new FileInfo(downloadedFilename)).Extension == ".zip")
+            if (new FileInfo(downloadedFilename).Extension == ".zip")
             {
                 ExtractFile(downloadedFilename);
             }
@@ -86,7 +84,7 @@ namespace GitHubDeployment
         {
 
             ZipFile.ExtractToDirectory(downloadedFilename, updater.GetUpdateLocation);
-            Console.WriteLine("Extracting complete");
+            Trace.WriteLine("Extracting complete");
 
 
             string extractionDir = Directory.GetDirectories(updater.GetUpdateLocation)[0];
@@ -97,18 +95,18 @@ namespace GitHubDeployment
                 info.MoveTo(updater.GetUpdateLocation + Path.DirectorySeparatorChar + info.Name);
             }
 
-            Console.WriteLine("Moving directories complete");
+            Trace.WriteLine("Moving directories complete");
 
             foreach (string file in Directory.GetFiles(extractionDir))
             {
                 FileInfo info = new FileInfo(file);
                 info.MoveTo(updater.GetUpdateLocation + Path.DirectorySeparatorChar + info.Name);
             }
-            Console.WriteLine("Moving Files Complete");
+            Trace.WriteLine("Moving Files Complete");
 
             Directory.Delete(extractionDir);
             File.Delete(downloadedFilename);
-            Console.WriteLine("Cleanup Complete");
+            Trace.WriteLine("Cleanup Complete");
         }
 
 
@@ -160,14 +158,14 @@ namespace GitHubDeployment
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Trace.WriteLine(e.Message);
             }
             return null;
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
-            Console.WriteLine("Download Complete");
+            Trace.WriteLine("Download Complete");
         }
     }
 }

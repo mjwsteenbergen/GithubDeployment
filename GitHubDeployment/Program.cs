@@ -19,6 +19,7 @@ namespace GitHubDeployment
                     {
                         Task.Run(async () =>
                         {
+                            Trace.WriteLine("Starting GitHubDeployment");
                             try
                             {
 //                                Updater u = new Updater("restsharp", "RestSharp");
@@ -30,15 +31,19 @@ namespace GitHubDeployment
 
                                 if (options.Apply)
                                 {
-                                    (new Updater(options.OwnerName, options.RepositoryName)).Apply();
-                                    return;
+                                    new Updater(options.OwnerName, options.RepositoryName).Apply();
                                 }
-                                await download.Update();
+                                else
+                                {
+                                    await download.Update();
+                                }
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e.Message);
+                                Trace.WriteLine(e.Message);
                             }
+
+                            Trace.WriteLine("Exiting GitHubDeployment");
 
                         }).Wait();
                         
