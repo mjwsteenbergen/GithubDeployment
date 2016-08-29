@@ -34,8 +34,6 @@ namespace GitHubDeployment
                                     return;
                                 }
                                 await download.Update();
-
-                                Console.ReadLine();
                             }
                             catch (Exception e)
                             {
