@@ -1,2 +1,3 @@
-sudo cp ./deploy /usr/bin/
-sudo chmod +x /usr/bin/deploy 
+#!/bin/bash
+cp ./deploy /usr/bin/
+chmod +x /usr/bin/deploy
