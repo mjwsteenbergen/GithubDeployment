@@ -43,11 +43,11 @@ namespace GitHubDeployment
 
             if (updater.package.Version == latestRelease.tag_name)
             {
-                Trace.WriteLine("Latest version was already installed");
+                Console.WriteLine("Latest version was already installed");
                 return;
             }
 
-            Trace.WriteLine("Found new version: " + latestRelease.tag_name);
+            Console.WriteLine("Found new version: " + latestRelease.tag_name);
 
             Directory.CreateDirectory(updater.GetUpdateLocation);
 
@@ -84,7 +84,7 @@ namespace GitHubDeployment
         {
 
             ZipFile.ExtractToDirectory(downloadedFilename, updater.GetUpdateLocation);
-            Trace.WriteLine("Extracting complete");
+            Console.WriteLine("Extracting complete");
 
 
             string extractionDir = Directory.GetDirectories(updater.GetUpdateLocation)[0];
@@ -95,18 +95,18 @@ namespace GitHubDeployment
                 info.MoveTo(updater.GetUpdateLocation + Path.DirectorySeparatorChar + info.Name);
             }
 
-            Trace.WriteLine("Moving directories complete");
+            Console.WriteLine("Moving directories complete");
 
             foreach (string file in Directory.GetFiles(extractionDir))
             {
                 FileInfo info = new FileInfo(file);
                 info.MoveTo(updater.GetUpdateLocation + Path.DirectorySeparatorChar + info.Name);
             }
-            Trace.WriteLine("Moving Files Complete");
+            Console.WriteLine("Moving Files Complete");
 
             Directory.Delete(extractionDir);
             File.Delete(downloadedFilename);
-            Trace.WriteLine("Cleanup Complete");
+            Console.WriteLine("Cleanup Complete");
         }
 
 
@@ -158,14 +158,14 @@ namespace GitHubDeployment
             }
             catch (Exception e)
             {
-                Trace.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
             }
             return null;
         }
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
-            Trace.WriteLine("Download Complete");
+            Console.WriteLine("Download Complete");
         }
     }
 }

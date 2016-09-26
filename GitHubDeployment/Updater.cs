@@ -63,7 +63,7 @@ namespace GitHubDeployment
                     Process p = Process.Start(psi);
                     string strOutput = p.StandardOutput.ReadToEnd();
                     p.WaitForExit();
-                    Trace.WriteLine(strOutput);
+                    Console.WriteLine(strOutput);
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace GitHubDeployment
         {
             if (Directory.Exists(GetUpdateLocation))
             {
-                Trace.WriteLine("Applying update");
+                Console.WriteLine("Applying update");
                 if (Directory.Exists(GetOutdatedApplicationPath))
                 {
                     DirectoryInfo oldDirectoryInfo = new DirectoryInfo(GetOutdatedApplicationPath);
@@ -95,7 +95,7 @@ namespace GitHubDeployment
             }
             else
             {
-                Trace.WriteLine("No update was found to apply");
+                Console.WriteLine("No update was found to apply");
             }
         }
 
