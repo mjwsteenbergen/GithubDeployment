@@ -37,7 +37,7 @@ namespace GitHubDeployment
 
                                 if (options.Apply)
                                 {
-                                    new Updater().Apply();
+                                    new Updater(package).Apply();
                                 }
                                 else
                                 {

@@ -1,2 +1,2 @@
 #!/bin/bash
-mono ~/.local/share/GitHubDeployment/Application/bin/Debug/GitHubDeployment.exe "$@"
+mono ~/.local/share/GitHubDeployment/Application/GitHubDeployment/bin/Debug/GitHubDeployment.exe "$@"

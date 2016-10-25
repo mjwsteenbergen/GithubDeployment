@@ -16,6 +16,11 @@ namespace GitHubDeployment
 
         public bool IsUnix = Environment.OSVersion.ToString().Contains("Unix");
 
+        public Updater(Package package)
+        {
+            this.package = package;
+        }
+
         public void Install()
         {
             if (package.Install != "")
