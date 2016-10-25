@@ -46,7 +46,7 @@ namespace GitHubDeployment
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e.Message);
+                                Console.WriteLine(e.Message + "\n" + e.StackTrace);
                             }
 
                             Console.WriteLine("Exiting GitHubDeployment");

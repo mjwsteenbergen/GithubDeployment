@@ -50,7 +50,7 @@ namespace GitHubDeployment
             }
 
             ExecuteCommandLine("git", "fetch");
-            ExecuteCommandLine("git", "reset --hard "+ latestRelease.target_commitish);
+            ExecuteCommandLine("git", "reset --hard "+ latestRelease.tag_name);
 
             
             package.Version = latestRelease.tag_name;
