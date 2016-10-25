@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineOptions.cs" />
+    <Compile Include="Directories.cs" />
     <Compile Include="Downloader.cs" />
     <Compile Include="Package.cs" />
     <Compile Include="Program.cs" />

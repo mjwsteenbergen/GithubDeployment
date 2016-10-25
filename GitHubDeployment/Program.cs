@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApiLibs.GitHub;
 using CommandLine;
+using Newtonsoft.Json;
 
 namespace GitHubDeployment
 {
@@ -22,12 +23,17 @@ namespace GitHubDeployment
                             Console.WriteLine("Starting GitHubDeployment");
                             try
                             {
-//                                Updater u = new Updater("restsharp", "RestSharp");
-//                                u.Install();
-                                Downloader download = new Downloader(options.OwnerName, options.RepositoryName,
-                                    options.Version,
-                                    options.DowloadLocation,
-                                    options.Type);
+
+                                Directories.Repository = options.RepositoryName;
+
+                                Directory.CreateDirectory(Directories.GetApplicationPath);
+
+                                if (!File.Exists(Directories.GetPackageLocation))
+                                {
+                                    File.WriteAllText(Directories.GetPackageLocation, JsonConvert.SerializeObject(new Package()));
+                                }
+
+                                Package package = JsonConvert.DeserializeObject<Package>(File.ReadAllText(Directories.GetPackageLocation));
 
                                 if (options.Apply)
                                 {
@@ -35,7 +41,7 @@ namespace GitHubDeployment
                                 }
                                 else
                                 {
-                                    await download.Update();
+                                    await new Downloader(options.OwnerName, options.RepositoryName, options.Version, package).DownloadUpdate();
                                 }
                             }
                             catch (Exception e)

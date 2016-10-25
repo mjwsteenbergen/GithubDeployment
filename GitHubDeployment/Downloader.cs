@@ -20,28 +20,21 @@ namespace GitHubDeployment
         public string user { get; set; }
         public string name { get; set; }
         public string version { get; set; }
-        public string type { get; set; }
-        private Updater updater;
+        private Package package;
 
-        public Downloader(string user, string name, string version, string path, string type)
+        public Downloader(string user, string name, string version, Package package)
         {
             this.user = user;
             this.name = name;
             this.version = version;
-            this.type = type;
-            updater = new Updater(user, name, path);
-
+            this.package = package;
         }
 
-        public async Task Update()
+        public async Task DownloadUpdate()
         {
-            Directory.CreateDirectory(updater.GetApplicationPath);
-
             Release latestRelease = await GetRelease();
 
-            
-
-            if (updater.package.Version == latestRelease.tag_name)
+            if (package.Version == latestRelease.tag_name)
             {
                 Console.WriteLine("Latest version was already installed");
                 return;
@@ -49,70 +42,43 @@ namespace GitHubDeployment
 
             Console.WriteLine("Found new version: " + latestRelease.tag_name);
 
-            Directory.CreateDirectory(updater.GetUpdateLocation);
-
-            string downloadedFilename = "";
-            if (type == null)
+            if (!Directory.Exists(Directories.GetApplicationBinPath))
             {
-                downloadedFilename = await DownloadFile(latestRelease.zipball_url, "zip");
-            }
-            else
-            {
-                foreach (var asset in latestRelease.assets)
-                {
-                    if (asset.name.Contains(type))
-                    {
-                        downloadedFilename = await DownloadFile(asset.browser_download_url);
-                        break;
-                    }
-                }
+                Directory.CreateDirectory(Directories.GetApplicationBinPath);
+                string xOptions = " Application --recursive";
+                ExecuteCommandLine("git", package.CloneUrl != "" ? package.CloneUrl + xOptions : "clone git@github.com:" + user + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
             }
 
-            if (new FileInfo(downloadedFilename).Extension == ".zip")
-            {
-                ExtractFile(downloadedFilename);
-            }
+            ExecuteCommandLine("git", "fetch");
+            ExecuteCommandLine("git", "reset --hard "+ latestRelease.target_commitish);
 
-            updater.package.Version = latestRelease.tag_name;
-
-            updater.Install();
-            updater.PostInstall();
-
+            
+            package.Version = latestRelease.tag_name;
+            package.WriteToFile();
         }
 
-        public void ExtractFile(string downloadedFilename)
+        public void ExecuteCommandLine(string command, string options, string appP = null)
         {
-
-            ZipFile.ExtractToDirectory(downloadedFilename, updater.GetUpdateLocation);
-            Console.WriteLine("Extracting complete");
-
-
-            string extractionDir = Directory.GetDirectories(updater.GetUpdateLocation)[0];
-
-            foreach (string dir in Directory.GetDirectories(extractionDir))
+            Console.WriteLine(command + " " + options);
+            ProcessStartInfo psi = new ProcessStartInfo
             {
-                DirectoryInfo info = new DirectoryInfo(dir);
-                info.MoveTo(updater.GetUpdateLocation + Path.DirectorySeparatorChar + info.Name);
-            }
+                FileName = command,
+                Arguments = options,
+                WorkingDirectory = appP ?? Directories.GetApplicationBinPath,
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
 
-            Console.WriteLine("Moving directories complete");
-
-            foreach (string file in Directory.GetFiles(extractionDir))
-            {
-                FileInfo info = new FileInfo(file);
-                info.MoveTo(updater.GetUpdateLocation + Path.DirectorySeparatorChar + info.Name);
-            }
-            Console.WriteLine("Moving Files Complete");
-
-            Directory.Delete(extractionDir);
-            File.Delete(downloadedFilename);
-            Console.WriteLine("Cleanup Complete");
+            Process p = Process.Start(psi);
+            string strOutput = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+            Console.WriteLine(strOutput);
         }
 
 
         public async Task<Release> GetRelease()
         {
-            GitHubService ghs = updater?.package?.github_token == null ? new GitHubService() : new GitHubService(updater.package.github_token);
+            GitHubService ghs = package?.github_token == null ? new GitHubService() : new GitHubService(package.github_token);
             List<Release> releases = await ghs.GetReleases(user, name);
 
             Release correctRelease;
@@ -129,43 +95,12 @@ namespace GitHubDeployment
 
                 throw new KeyNotFoundException("The specified version was not found");
             }
-            else
+
+            if (releases.Count == 0)
             {
-                if (releases.Count == 0)
-                {
-                    throw new KeyNotFoundException("This repository does not have any releases");
-                }
-                return releases[0];
+                throw new KeyNotFoundException("This repository does not have any releases");
             }
-
-        }
-
-
-        public async Task<string> DownloadFile(string url, string type = null)
-        {
-            WebClient webClient = new WebClient();
-            webClient.Headers["User-Agent"] = "myUserAgentString";
-            webClient.DownloadFileCompleted += Completed;
-
-            //Get the name of the file from the url
-            string filename = Regex.Match(url, @"\/([^\/]+$)").Value.Remove(0, 1);
-            try
-            {
-                string fileType = type == null ? "" : "." + type;
-                string password = updater.package.github_token != null ? "?access_token=" + updater.package.github_token : "";
-                await webClient.DownloadFileTaskAsync(new Uri(url + password), updater.GetApplicationPath + Path.DirectorySeparatorChar + filename + fileType);
-                return updater.GetApplicationPath + Path.DirectorySeparatorChar + filename + "." + type;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return null;
-        }
-
-        private void Completed(object sender, AsyncCompletedEventArgs e)
-        {
-            Console.WriteLine("Download Complete");
+            return releases[0];
         }
     }
 }
