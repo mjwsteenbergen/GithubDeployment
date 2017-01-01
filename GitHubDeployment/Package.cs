@@ -10,9 +10,17 @@ namespace GitHubDeployment
 {
     class Package
     {
+        [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }
+
+        [JsonProperty(PropertyName = "install")]
         public string Install { get; set; }
-        public string github_token { get; set; }
+
+        [JsonProperty(PropertyName = "update_method")]
+        public string UpdateMethod { get; set; }
+
+        [JsonProperty(PropertyName = "github_token")]
+        public string GithubToken { get; set; }
 
         [JsonProperty(PropertyName = "clone_url")]
         public string CloneUrl { get; set; }
@@ -22,6 +30,7 @@ namespace GitHubDeployment
             Version = "";
             Install = "";
             CloneUrl = "";
+            UpdateMethod = "tag";
         }
 
         public void WriteToFile()

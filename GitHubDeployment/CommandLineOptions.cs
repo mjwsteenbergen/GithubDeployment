@@ -9,17 +9,17 @@ namespace GitHubDeployment
 {
     class CommandLineOptions
     {
-        [Option('u', "user", HelpText = "Where to get the files from", Required = true)]
+        [Value(0, HelpText = "User to get the files from", Required = true)]
         public string OwnerName { get; set; }
 
-        [Option('r',"repository", HelpText = "Where to get the files from", Required = true)]
+        [Value(1, HelpText = "Repository to get the files from", Required = true)]
         public string RepositoryName { get; set; }
 
         [Option('v', "version", HelpText = "Which version to get", Required = false)]
         public string Version { get; set; }
 
-        [Option('a', "apply", HelpText = "Apply the update", Required = false)]
-        public bool Apply { get; set; }
+        [Option("no-apply", HelpText = "Do not immediately apply the update", Required = false)]
+        public bool NotApply { get; set; }
 
     }
 }

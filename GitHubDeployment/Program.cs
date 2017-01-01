@@ -35,13 +35,12 @@ namespace GitHubDeployment
 
                                 Package package = JsonConvert.DeserializeObject<Package>(File.ReadAllText(Directories.GetPackageLocation));
 
-                                if (options.Apply)
+                                Updater updater = new Updater(options.OwnerName, options.RepositoryName, options.Version, package);
+                                await updater.DownloadUpdate();
+
+                                if (!options.NotApply)
                                 {
-                                    new Updater(package).Apply();
-                                }
-                                else
-                                {
-                                    await new Downloader(options.OwnerName, options.RepositoryName, options.Version, package).DownloadUpdate();
+                                    updater.Install();
                                 }
                             }
                             catch (Exception e)
