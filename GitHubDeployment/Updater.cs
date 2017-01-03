@@ -50,7 +50,7 @@ namespace GitHubDeployment
                 {
                     Directory.CreateDirectory(Directories.GetApplicationBinPath);
                     string xOptions = " Application --recursive";
-                    ExecuteCommandLine("git", package.CloneUrl != "" ? package.CloneUrl + xOptions : "clone git@github.com:" + user + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
+                    ExecuteCommandLine("git", "clone git@github.com:" + user + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
                 }
 
                 ExecuteCommandLine("git", "reset --hard " + latestRelease.tag_name);
@@ -111,7 +111,6 @@ namespace GitHubDeployment
             {
                 throw new Exception("Script returned an error");
             }
-
             return strOutput;
         }
 
