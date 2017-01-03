@@ -36,7 +36,7 @@ namespace GitHubDeployment
 
         public void WriteToFile()
         {
-            File.WriteAllText(Directories.GetPackageLocation, JsonConvert.SerializeObject(this));
+            File.WriteAllText(Directories.GetPackageLocation, JsonConvert.SerializeObject(this, Formatting.Indented));
         }
     }
 }
