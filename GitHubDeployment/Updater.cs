@@ -106,11 +106,11 @@ namespace GitHubDeployment
             Process p = Process.Start(psi);
             string strOutput = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
+            Console.WriteLine(strOutput);
             if (p.ExitCode != 0)
             {
                 throw new Exception("Script returned an error");
             }
-            Console.WriteLine(strOutput);
 
             return strOutput;
         }
