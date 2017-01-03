@@ -26,7 +26,7 @@ namespace GitHubDeployment
 
                                 if (Equals(options.RepositoryName, null) || Equals(options.OwnerName, null))
                                 {
-                                    Directories.Repository = Environment.CurrentDirectory;
+                                    Directories.GetApplicationPath = Environment.CurrentDirectory;
 
                                     if (!File.Exists(Directories.GetPackageLocation))
                                     {

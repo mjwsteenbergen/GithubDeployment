@@ -10,8 +10,19 @@ namespace GitHubDeployment
     class Directories
     {
         public static string Repository { get; set; }
-        public static string GetBasePath => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        public static string GetApplicationPath { get { return GetBasePath + Path.DirectorySeparatorChar + Repository; } }
+        private static string GetBasePath => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+        private static string ApplicationPath;
+        public static string GetApplicationPath {
+            get
+            {
+                return ApplicationPath ?? GetBasePath + Path.DirectorySeparatorChar + Repository;
+            }
+            set
+            {
+                ApplicationPath = value;
+            }
+        }
         public static string GetApplicationBinPath { get { return GetApplicationPath + Path.DirectorySeparatorChar + "Application"; } }
         public static string GetPackageLocation { get { return GetApplicationPath + Path.DirectorySeparatorChar + "package.json"; } }
     }
