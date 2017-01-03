@@ -9,10 +9,10 @@ namespace GitHubDeployment
 {
     class CommandLineOptions
     {
-        [Value(0, HelpText = "User to get the files from", Required = true)]
+        [Value(0, HelpText = "User to get the files from", Required = false)]
         public string OwnerName { get; set; }
 
-        [Value(1, HelpText = "Repository to get the files from", Required = true)]
+        [Value(1, HelpText = "Repository to get the files from", Required = false)]
         public string RepositoryName { get; set; }
 
         [Option('v', "version", HelpText = "Which version to get", Required = false)]

@@ -24,7 +24,20 @@ namespace GitHubDeployment
                             try
                             {
 
-                                Directories.Repository = options.RepositoryName;
+                                if (options.OwnerName == "" || options.RepositoryName == "")
+                                {
+                                    Directories.Repository = Environment.CurrentDirectory;
+
+                                    if (!File.Exists(Directories.GetPackageLocation))
+                                    {
+                                        Console.WriteLine("You did not supply an owner/repository and you are not in a folder which has a package.json");
+                                    }
+
+                                }
+                                else
+                                {
+                                    Directories.Repository = options.RepositoryName;
+                                }
 
                                 Directory.CreateDirectory(Directories.GetApplicationPath);
 
