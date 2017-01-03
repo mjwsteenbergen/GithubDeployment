@@ -24,13 +24,14 @@ namespace GitHubDeployment
                             try
                             {
 
-                                if (options.OwnerName == "" || options.RepositoryName == "")
+                                if (Equals(options.RepositoryName, null) || Equals(options.OwnerName, null))
                                 {
                                     Directories.Repository = Environment.CurrentDirectory;
 
                                     if (!File.Exists(Directories.GetPackageLocation))
                                     {
                                         Console.WriteLine("You did not supply an owner/repository and you are not in a folder which has a package.json");
+                                        return;
                                     }
 
                                 }
