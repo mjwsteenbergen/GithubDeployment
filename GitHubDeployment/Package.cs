@@ -31,6 +31,7 @@ namespace GitHubDeployment
             Install = "";
             CloneUrl = "";
             UpdateMethod = "tag";
+            GithubToken = "";
         }
 
         public void WriteToFile()
