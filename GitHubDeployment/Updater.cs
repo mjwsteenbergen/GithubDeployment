@@ -120,8 +120,6 @@ namespace GitHubDeployment
             GitHubService ghs = package?.GithubToken == null ? new GitHubService() : new GitHubService(package.GithubToken);
             List<Release> releases = await ghs.GetReleases(user, name);
 
-            Release correctRelease;
-
             if (version != null)
             {
                 foreach (Release release in releases)
