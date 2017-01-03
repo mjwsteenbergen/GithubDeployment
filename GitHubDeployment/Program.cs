@@ -36,9 +36,9 @@ namespace GitHubDeployment
                                 Package package = JsonConvert.DeserializeObject<Package>(File.ReadAllText(Directories.GetPackageLocation));
 
                                 Updater updater = new Updater(options.OwnerName, options.RepositoryName, options.Version, package);
-                                await updater.DownloadUpdate();
+                                bool needsInstall = await updater.DownloadUpdate();
 
-                                if (!options.NotApply)
+                                if (!options.NotApply && needsInstall)
                                 {
                                     updater.Install();
                                 }

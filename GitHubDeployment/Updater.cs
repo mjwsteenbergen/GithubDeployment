@@ -30,7 +30,7 @@ namespace GitHubDeployment
             this.package = package;
         }
 
-        public async Task DownloadUpdate()
+        public async Task<bool> DownloadUpdate()
         {
             ExecuteCommandLine("git", "fetch");
 
@@ -41,7 +41,7 @@ namespace GitHubDeployment
                 if (package.Version == latestRelease.tag_name)
                 {
                     Console.WriteLine("Latest version was already installed");
-                    return;
+                    return false;
                 }
 
                 Console.WriteLine("Found new version: " + latestRelease.tag_name);
@@ -58,7 +58,10 @@ namespace GitHubDeployment
             }
             else if (package.UpdateMethod == "pull")
             {
-                ExecuteCommandLine("git", "pull");
+                if (ExecuteCommandLine("git", "pull").Contains("Already up-to-date."))
+                {
+                    return false;
+                }
             }
             else
             {
@@ -68,6 +71,8 @@ namespace GitHubDeployment
             ExecuteCommandLine("git", "submodule update");
             
             package.WriteToFile();
+
+            return true;
         }
 
         public void Install()
@@ -86,7 +91,7 @@ namespace GitHubDeployment
 
         }
 
-        public void ExecuteCommandLine(string command, string options, string appP = null)
+        public string ExecuteCommandLine(string command, string options, string appP = null)
         {
             Console.WriteLine(command + " " + options);
             ProcessStartInfo psi = new ProcessStartInfo
@@ -106,6 +111,8 @@ namespace GitHubDeployment
                 throw new Exception("Script returned an error");
             }
             Console.WriteLine(strOutput);
+
+            return strOutput;
         }
 
 
