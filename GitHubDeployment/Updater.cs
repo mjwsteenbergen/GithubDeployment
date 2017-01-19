@@ -32,6 +32,13 @@ namespace GitHubDeployment
 
         public async Task<bool> DownloadUpdate()
         {
+            if (!Directory.Exists(Directories.GetApplicationBinPath))
+            {
+                Directory.CreateDirectory(Directories.GetApplicationBinPath);
+                string xOptions = " Application --recursive";
+                ExecuteCommandLine("git", "clone git@github.com:" + user + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
+            }
+
             ExecuteCommandLine("git", "fetch");
 
             if (package.UpdateMethod == "tag")
@@ -45,13 +52,6 @@ namespace GitHubDeployment
                 }
 
                 Console.WriteLine("Found new version: " + latestRelease.tag_name);
-
-                if (!Directory.Exists(Directories.GetApplicationBinPath))
-                {
-                    Directory.CreateDirectory(Directories.GetApplicationBinPath);
-                    string xOptions = " Application --recursive";
-                    ExecuteCommandLine("git", "clone git@github.com:" + user + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
-                }
 
                 ExecuteCommandLine("git", "reset --hard " + latestRelease.tag_name);
                 package.Version = latestRelease.tag_name;
