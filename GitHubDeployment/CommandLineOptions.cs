@@ -20,5 +20,8 @@ namespace GitHubDeployment
 
         [Option("no-apply", HelpText = "Do not immediately apply the update", Required = false)]
         public bool NotApply { get; set; }
+
+        [Option("install", HelpText = "Only runs the install script")]
+        public bool Install { get; set; }
     }
 }
