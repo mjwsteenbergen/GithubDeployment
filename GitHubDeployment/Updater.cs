@@ -104,9 +104,9 @@ namespace GitHubDeployment
             };
 
             Process p = Process.Start(psi);
+            Console.WriteLine(p.StandardOutput);
             string strOutput = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
-            Console.WriteLine(strOutput);
             if (p.ExitCode != 0)
             {
                 throw new Exception("Script returned an error");
