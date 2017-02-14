@@ -68,7 +68,7 @@ namespace GitHubDeployment
                 throw new ArgumentException("Update Method " + package.UpdateMethod + " does not exist");
             }
             
-            ExecuteCommandLine("git", "submodule update");
+            ExecuteCommandLine("git", "submodule update --recursive");
             
             package.WriteToFile();
 
