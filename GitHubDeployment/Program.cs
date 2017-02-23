@@ -27,6 +27,11 @@ namespace GitHubDeployment
                             Console.WriteLine("Starting GitHubDeployment");
                             try
                             {
+                                if (options.Init)
+                                {
+                                    FirstRun(options);
+                                    return;
+                                }
 
                                 if (Equals(options.RepositoryName, null))
                                 {
@@ -51,14 +56,6 @@ namespace GitHubDeployment
                                         return;
                                     }
                                 }
-
-                                if (options.Init)
-                                {
-                                    FirstRun(options);
-                                    return;
-                                }
-
-
 
                                 Package package = JsonConvert.DeserializeObject<Package>(File.ReadAllText(Directories.GetPackageLocation));
 
