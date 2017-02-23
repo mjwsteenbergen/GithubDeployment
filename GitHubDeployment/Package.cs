@@ -21,7 +21,9 @@ namespace GitHubDeployment
 
         [JsonProperty(PropertyName = "github_token")]
         public string GithubToken { get; set; }
-        
+
+        [JsonProperty(PropertyName = "user")]
+        public string Username { get; set; }
 
         public Package()
         {

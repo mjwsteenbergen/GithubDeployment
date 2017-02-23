@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApiLibs.GitHub;
 using CommandLine;
@@ -18,19 +19,23 @@ namespace GitHubDeployment
             Parser.Default.ParseArguments<CommandLineOptions>(args).MapResult(
                     options =>
                     {
+
+                        int returnCode = 0;
+
                         Task.Run(async () =>
                         {
                             Console.WriteLine("Starting GitHubDeployment");
                             try
                             {
 
-                                if (Equals(options.RepositoryName, null) || Equals(options.OwnerName, null))
+                                if (Equals(options.RepositoryName, null))
                                 {
                                     Directories.GetApplicationPath = Environment.CurrentDirectory;
 
                                     if (!File.Exists(Directories.GetPackageLocation))
                                     {
                                         Console.WriteLine("You did not supply an owner/repository and you are not in a folder which has a package.json");
+                                        returnCode = 1;
                                         return;
                                     }
 
@@ -40,16 +45,17 @@ namespace GitHubDeployment
                                     Directories.Repository = options.RepositoryName;
                                 }
 
-                                Directory.CreateDirectory(Directories.GetApplicationPath);
-
-                                if (!File.Exists(Directories.GetPackageLocation))
+                                if (options.Init)
                                 {
-                                    File.WriteAllText(Directories.GetPackageLocation, JsonConvert.SerializeObject(new Package()));
+                                    FirstRun(options);
+                                    return;
                                 }
+
+
 
                                 Package package = JsonConvert.DeserializeObject<Package>(File.ReadAllText(Directories.GetPackageLocation));
 
-                                Updater updater = new Updater(options.OwnerName, options.RepositoryName, options.Version, package);
+                                Updater updater = new Updater(options.RepositoryName, options.Version, package);
 
                                 if (options.Install)
                                 {
@@ -73,7 +79,7 @@ namespace GitHubDeployment
 
                         }).Wait();
                         
-                        return 0;
+                        return returnCode;
                     },
                     errors =>
                     {
@@ -83,6 +89,24 @@ namespace GitHubDeployment
 
             
              
+        }
+
+        private static void FirstRun(CommandLineOptions options)
+        {
+            var package = new Package();
+
+            Updater updater = new Updater(options.RepositoryName, options.Version, package);
+
+            var match = Regex.Match(options.RepositoryName, "(.+)/(.+)");
+
+            Directories.Repository = match.Groups[2].Value;
+            package.Username = match.Groups[1].Value;
+
+            Directory.CreateDirectory(Directories.GetApplicationPath);
+            Directory.CreateDirectory(Directories.GetApplicationBinPath);
+
+            updater.FirstDownload();
+            package.WriteToFile();
         }
     }
 }
