@@ -43,6 +43,13 @@ namespace GitHubDeployment
                                 else
                                 {
                                     Directories.Repository = options.RepositoryName;
+
+                                    if (!File.Exists(Directories.GetPackageLocation))
+                                    {
+                                        Console.WriteLine("We could not find the repository you are looking for");
+                                        returnCode = 1;
+                                        return;
+                                    }
                                 }
 
                                 if (options.Init)
@@ -95,7 +102,6 @@ namespace GitHubDeployment
         {
             var package = new Package();
 
-            Updater updater = new Updater(options.RepositoryName, options.Version, package);
 
             var match = Regex.Match(options.RepositoryName, "(.+)/(.+)");
 
@@ -104,6 +110,8 @@ namespace GitHubDeployment
 
             Directory.CreateDirectory(Directories.GetApplicationPath);
             Directory.CreateDirectory(Directories.GetApplicationBinPath);
+
+            Updater updater = new Updater(Directories.Repository, options.Version, package);
 
             updater.FirstDownload();
             package.WriteToFile();
