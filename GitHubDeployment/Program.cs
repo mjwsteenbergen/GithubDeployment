@@ -68,13 +68,15 @@ namespace GitHubDeployment
                                 }
 
                                 updater.Fetch();
+                                bool needsInstall = false;
 
                                 if (!Equals(options.Branch, null))
                                 {
                                     updater.ExecuteCommandLine("git", " checkout " + options.Branch);
+                                    needsInstall = true;
                                 }
 
-                                bool needsInstall = await updater.DownloadUpdate();
+                                needsInstall = needsInstall || await updater.DownloadUpdate();
 
                                 if (!options.NotApply && needsInstall)
                                 {
