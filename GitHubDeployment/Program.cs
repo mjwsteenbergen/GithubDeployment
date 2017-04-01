@@ -61,15 +61,17 @@ namespace GitHubDeployment
 
                                 Updater updater = new Updater(options.RepositoryName, options.Version, package);
 
-                                if (!Equals(options.Branch, null))
-                                {
-                                    updater.ExecuteCommandLine("git", " checkout " + options.Branch);
-                                }
-
                                 if (options.Install)
                                 {
                                     updater.Install();
                                     return;
+                                }
+
+                                updater.Fetch();
+
+                                if (!Equals(options.Branch, null))
+                                {
+                                    updater.ExecuteCommandLine("git", " checkout " + options.Branch);
                                 }
 
                                 bool needsInstall = await updater.DownloadUpdate();

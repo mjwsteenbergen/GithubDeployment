@@ -37,7 +37,7 @@ namespace GitHubDeployment
             package.WriteToFile();
         }
 
-        public async Task<bool> DownloadUpdate()
+        public void Fetch()
         {
             if (!Directory.Exists(Directories.GetApplicationBinPath))
             {
@@ -46,7 +46,10 @@ namespace GitHubDeployment
             }
 
             ExecuteCommandLine("git", "fetch");
+        }
 
+        public async Task<bool> DownloadUpdate()
+        {
             if (package.UpdateMethod == "tag")
             {
                 Release latestRelease = await GetRelease();
