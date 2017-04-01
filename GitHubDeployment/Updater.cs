@@ -16,27 +16,33 @@ namespace GitHubDeployment
 {
     class Updater
     {
-        public string user { get; set; }
+//        public string user { get; set; }
         public string name { get; set; }
         public string version { get; set; }
         private Package package;
         public bool IsUnix = Environment.OSVersion.ToString().Contains("Unix");
 
-        public Updater(string user, string name, string version, Package package)
+        public Updater(string name, string version, Package package)
         {
-            this.user = user;
+//            this.user = user;
             this.name = name;
             this.version = version;
             this.package = package;
+        }
+
+        public void FirstDownload()
+        {
+            string xOptions = " Application --recursive";
+            ExecuteCommandLine("git", "clone git@github.com:" + package.Username + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
+            package.WriteToFile();
         }
 
         public async Task<bool> DownloadUpdate()
         {
             if (!Directory.Exists(Directories.GetApplicationBinPath))
             {
-                Directory.CreateDirectory(Directories.GetApplicationBinPath);
-                string xOptions = " Application --recursive";
-                ExecuteCommandLine("git", "clone git@github.com:" + user + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
+                Console.WriteLine("Application sub folder does not exist. Something must have gone wrong. Exiting");
+                throw new Exception();
             }
 
             ExecuteCommandLine("git", "fetch");
@@ -118,7 +124,7 @@ namespace GitHubDeployment
         public async Task<Release> GetRelease()
         {
             GitHubService ghs = package?.GithubToken == null ? new GitHubService() : new GitHubService(package.GithubToken);
-            List<Release> releases = await ghs.GetReleases(user, name);
+            List<Release> releases = await ghs.GetReleases(package?.Username, name);
 
             if (version != null)
             {

@@ -12,15 +12,15 @@ namespace GitHubDeployment
         public static string Repository { get; set; }
         private static string GetBasePath => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-        private static string ApplicationPath;
+        private static string _applicationPath;
         public static string GetApplicationPath {
             get
             {
-                return ApplicationPath ?? GetBasePath + Path.DirectorySeparatorChar + Repository;
+                return _applicationPath ?? GetBasePath + Path.DirectorySeparatorChar + Repository;
             }
             set
             {
-                ApplicationPath = value;
+                _applicationPath = value;
             }
         }
         public static string GetApplicationBinPath { get { return GetApplicationPath + Path.DirectorySeparatorChar + "Application"; } }

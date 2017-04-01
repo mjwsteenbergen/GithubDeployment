@@ -9,10 +9,7 @@ namespace GitHubDeployment
 {
     class CommandLineOptions
     {
-        [Value(0, HelpText = "User to get the files from", Required = false)]
-        public string OwnerName { get; set; }
-
-        [Value(1, HelpText = "Repository to get the files from", Required = false)]
+        [Value(0, HelpText = "", Required = false)]
         public string RepositoryName { get; set; }
 
         [Option('v', "version", HelpText = "Which version to get", Required = false)]
@@ -23,5 +20,8 @@ namespace GitHubDeployment
 
         [Option("install", HelpText = "Only runs the install script")]
         public bool Install { get; set; }
+
+        [Option("init", HelpText = "Only runs the install script")]
+        public bool Init { get; set; }
     }
 }
