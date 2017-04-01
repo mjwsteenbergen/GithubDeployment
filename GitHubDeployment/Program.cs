@@ -63,7 +63,7 @@ namespace GitHubDeployment
 
                                 if (!Equals(options.Branch, null))
                                 {
-                                    updater.ExecuteCommandLine("git", " checkout -b " + options.Branch);
+                                    updater.ExecuteCommandLine("git", " checkout " + options.Branch);
                                 }
 
                                 if (options.Install)
