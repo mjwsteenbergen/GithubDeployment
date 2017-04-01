@@ -61,6 +61,11 @@ namespace GitHubDeployment
 
                                 Updater updater = new Updater(options.RepositoryName, options.Version, package);
 
+                                if (!Equals(options.Branch, null))
+                                {
+                                    updater.ExecuteCommandLine("git", " checkout -b " + options.Branch);
+                                }
+
                                 if (options.Install)
                                 {
                                     updater.Install();

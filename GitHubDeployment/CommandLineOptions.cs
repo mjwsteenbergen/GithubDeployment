@@ -15,6 +15,9 @@ namespace GitHubDeployment
         [Option('v', "version", HelpText = "Which version to get", Required = false)]
         public string Version { get; set; }
 
+        [Option('b', "branch", HelpText = "Switch to new branch", Required = false)]
+        public string Branch { get; set; }
+
         [Option("no-apply", HelpText = "Do not immediately apply the update", Required = false)]
         public bool NotApply { get; set; }
 
