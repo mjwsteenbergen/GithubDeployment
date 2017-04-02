@@ -73,6 +73,8 @@ namespace GitHubDeployment
                                 if (!Equals(options.Branch, null))
                                 {
                                     updater.ExecuteCommandLine("git", " checkout " + options.Branch);
+                                    updater.ExecuteCommandLine("git", "submodule update --recursive");
+
                                     needsInstall = true;
                                 }
 
