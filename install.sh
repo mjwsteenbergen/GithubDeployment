@@ -3,4 +3,4 @@ cd ApiLibs
 nuget restore
 cd ..
 nuget restore
-xbuild GitHubDeployment.sln
+xbuild GHDeploy.sln
