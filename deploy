@@ -1,2 +1,2 @@
 #!/bin/bash
-dotnet ~/.local/share/ghdeploy/Application/GHDeploy/bin/Debug/Zeus.dll "$@"
+dotnet ~/.local/share/ghdeploy/Application/ghdeploy/bin/Debug/netcoreapp2.0/publish/ghdeploy.dll "$@"
