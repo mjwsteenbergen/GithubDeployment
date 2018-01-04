@@ -92,7 +92,11 @@ namespace GitHubDeployment
                 {
                     var commanditems = package.Install.Split(' ');
                     string command = commanditems[0];
-                    var arguments = command.Remove(0);
+                    string arguments = "";
+                    if (commanditems.Length > 1)
+                    {
+                        arguments = string.Join(' ', commanditems.Skip(1));
+                    }
 
                     ExecuteCommandLine(command, arguments);
                 }
