@@ -90,7 +90,11 @@ namespace GitHubDeployment
             {
                 if (IsUnix)
                 {
-                    ExecuteCommandLine(package.Install, "");
+                    var commanditems = package.Install.Split(' ');
+                    string command = commanditems[0];
+                    var arguments = command.Remove(0);
+
+                    ExecuteCommandLine(command, arguments);
                 }
                 else
                 {
