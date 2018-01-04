@@ -3,4 +3,4 @@ cd ApiLibs
 nuget restore
 cd ..
 nuget restore
-xbuild GHDeploy.sln
+dotnet publish ghdeploy.sln

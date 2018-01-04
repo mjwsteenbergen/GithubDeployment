@@ -1,2 +1,2 @@
 #!/bin/bash
-mono ~/.local/share/ghdeploy/Application/GHDeploy/bin/Debug/GHDeploy.exe "$@"
+dotnet ~/.local/share/ghdeploy/Application/GHDeploy/bin/Debug/Zeus.dll "$@"

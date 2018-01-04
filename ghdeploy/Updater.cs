@@ -90,7 +90,7 @@ namespace GitHubDeployment
             {
                 if (IsUnix)
                 {
-                    ExecuteCommandLine("sh", package.Install);
+                    ExecuteCommandLine(package.Install, "");
                 }
                 else
                 {
