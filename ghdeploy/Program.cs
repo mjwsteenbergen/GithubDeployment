@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ApiLibs.GitHub;
-using ghdeploy;
+using GitHubDeployment;
 using Mono.Options;
 using Newtonsoft.Json;
 
-namespace GitHubDeployment
+namespace ghdeploy
 {
     public class Program
     {
@@ -66,7 +62,7 @@ namespace GitHubDeployment
                     return;
                 }
 
-                if (Equals(RepositoryName, null))
+                if (RepositoryName != "")
                 {
                     Directories.GetApplicationPath = Environment.CurrentDirectory;
 
@@ -101,9 +97,9 @@ namespace GitHubDeployment
                 updater.Fetch();
                 bool needsInstall = false;
 
-                if (!Equals(Branch, null))
+                if (Branch != "")
                 {
-                    CommandLine.Run("git", " checkout " + Branch);
+                    CommandLine.Run("git", "checkout " + Branch);
                     CommandLine.Run("git", "submodule update --recursive");
 
                     needsInstall = true;
