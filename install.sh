@@ -1,6 +1,5 @@
 echo Starting Install Script
 cd ApiLibs
-nuget restore
+dotnet restore
 cd ..
-nuget restore
 dotnet publish ghdeploy.sln
