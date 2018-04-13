@@ -62,7 +62,7 @@ namespace ghdeploy
                     return;
                 }
 
-                if (RepositoryName != "")
+                if (RepositoryName == "")
                 {
                     Directories.GetApplicationPath = Environment.CurrentDirectory;
 
