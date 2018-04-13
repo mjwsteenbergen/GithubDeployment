@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApiLibs.GitHub;
+using ghdeploy;
 using Mono.Options;
 using Newtonsoft.Json;
 
@@ -102,8 +103,8 @@ namespace GitHubDeployment
 
                 if (!Equals(Branch, null))
                 {
-                    updater.ExecuteCommandLine("git", " checkout " + Branch);
-                    updater.ExecuteCommandLine("git", "submodule update --recursive");
+                    CommandLine.Run("git", " checkout " + Branch);
+                    CommandLine.Run("git", "submodule update --recursive");
 
                     needsInstall = true;
                 }

@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApiLibs.GitHub;
-using ApiLibs.General;
-using Newtonsoft.Json;
+using GitHubDeployment;
 
-namespace GitHubDeployment
+namespace ghdeploy
 {
     class Updater
     {
-//        public string user { get; set; }
         public string name { get; set; }
         public string version { get; set; }
         private Package package;
@@ -24,7 +18,6 @@ namespace GitHubDeployment
 
         public Updater(string name, string version, Package package)
         {
-//            this.user = user;
             this.name = name;
             this.version = version;
             this.package = package;
@@ -33,7 +26,7 @@ namespace GitHubDeployment
         public void FirstDownload()
         {
             string xOptions = " Application --recursive";
-            ExecuteCommandLine("git", "clone git@github.com:" + package.Username + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
+            CommandLine.Run("git", "clone git@github.com:" + package.Username + "/" + name + ".git" + xOptions, Directories.GetApplicationPath);
             package.WriteToFile();
         }
 
@@ -45,7 +38,7 @@ namespace GitHubDeployment
                 throw new Exception();
             }
 
-            ExecuteCommandLine("git", "fetch");
+            CommandLine.Run("git", "fetch");
         }
 
         public async Task<bool> DownloadUpdate()
@@ -62,12 +55,12 @@ namespace GitHubDeployment
 
                 Console.WriteLine("Found new version: " + latestRelease.tag_name);
 
-                ExecuteCommandLine("git", "reset --hard " + latestRelease.tag_name);
+                CommandLine.Run("git", "reset --hard " + latestRelease.tag_name);
                 package.Version = latestRelease.tag_name;
             }
             else if (package.UpdateMethod == "pull")
             {
-                if (ExecuteCommandLine("git", "pull").Contains("Already up-to-date."))
+                if (CommandLine.Run("git", "pull").Contains("Already up-to-date."))
                 {
                     return false;
                 }
@@ -76,8 +69,8 @@ namespace GitHubDeployment
             {
                 throw new ArgumentException("Update Method " + package.UpdateMethod + " does not exist");
             }
-            
-            ExecuteCommandLine("git", "submodule update --recursive");
+
+            CommandLine.Run("git", "submodule update --recursive");
             
             package.WriteToFile();
 
@@ -98,37 +91,13 @@ namespace GitHubDeployment
                         arguments = string.Join(' ', commanditems.Skip(1));
                     }
 
-                    ExecuteCommandLine(command, arguments);
+                    CommandLine.Run(command, arguments);
                 }
                 else
                 {
                     Process.Start("cmd", "/K \"cd " + Directories.GetApplicationPath + "\"" + " & start " + Directories.GetApplicationPath + Path.DirectorySeparatorChar + package.Install);
                 }
             }
-
-        }
-
-        public string ExecuteCommandLine(string command, string options, string appP = null)
-        {
-            Console.WriteLine(command + " " + options);
-            ProcessStartInfo psi = new ProcessStartInfo
-            {
-                FileName = command,
-                Arguments = options,
-                WorkingDirectory = appP ?? Directories.GetApplicationBinPath,
-                UseShellExecute = false,
-                RedirectStandardOutput = true
-            };
-
-            Process p = Process.Start(psi);
-            string strOutput = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
-            Console.WriteLine(strOutput);
-            if (p.ExitCode != 0)
-            {
-                throw new Exception("Script returned an error");
-            }
-            return strOutput;
         }
 
 
